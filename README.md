@@ -16,6 +16,7 @@ typedef struct fixed_size_allocator fixed_size_allocator_t;
 ```
 Typedef for the allocator.
 
+
 ```c
 fixed_size_allocator_t *FSAInitialize(void *memory_pool, size_t block_size, size_t pool_size);
 ```
@@ -23,12 +24,14 @@ Description: Initializes the VSA.
 Parameters: Pointer to allocated memory block, the size of each block, and the size of the memory pool.
 Returns: Pointer to the allocated block. If failed, returns NULL.
 
+
 ```c
 void *FSAAlloc(fixed_size_allocator_t *allocator);
 ```
 Description: Allocates a block of memory.
 Parameters: Pointer to allocator.
 Returns: Pointer to the allocated memory block. If failed, returns NULL. If no memory blocks are available, returns NULL.
+
 
 
 ```c
@@ -39,12 +42,14 @@ Parameters: Pointer to FSA, Pointer to a previously allocated memory block.
 Returns: void.
 
 
+
 ```c
 size_t FSACountFree(fixed_size_allocator_t *allocator)
 ```
 Description: Returns the amount of blocks available for allocation.
 Parameters: Pointer to an allocator.
 Returns: Number of blocks available for allocation. 
+
 
 
 
@@ -60,10 +65,11 @@ The free list is stored within the memory pool itself, without consuming any ext
 The Allocator is initialized by dividing the memory pool into fixed-size blocks and linking them together to form a free list.
 
 Memory Pool Layout after initialization:
-
+```c
 | allocator | block1        | block2        | block3        | block4                 |
-|           | (offset to 2) | (offset to 3) | (offset to 4) | 0 ( marks end of list) |
 
+|           | (offset to 2) | (offset to 3) | (offset to 4) | 0 ( marks end of list) |
+```
 
 **Allocation and Deallocation:**
 
@@ -75,9 +81,11 @@ Allocation:
 - After this, the user gets a pointer to the start of the allocated memory block, and the free list offset points to the new head of the free list.
 
 
+
 Freeing Memory:
 
 When `FSAfree()` is called, each freed block is inserted back at the head of the free list. This allows it to be quickly re-allocated, keeping the free list management simple and efficient.
+
 
 
 Allocation and deallocation efficiency:
@@ -86,9 +94,11 @@ Each allocation simply moves the head of the free list to the next available blo
 
 
 
+
 **Memory Alignment:**
 
 All allocations (and the memory pool itself) are aligned to the word size, ensuring that data within the memory blocks adheres to alignment requirements and optimizing performance.
+
 
 
 
