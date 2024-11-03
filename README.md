@@ -136,23 +136,13 @@ int main() {
         printf("Allocation failed\n");
     }
 
-    // Allocate another block
-    void *block2 = FSAAlloc(allocator);
-    if (block2) {
-        printf("Allocated another block at address: %p\n", block2);
-    }
-
     // Count free blocks available
     size_t free_blocks = FSACountFree(allocator);
     printf("Free blocks available: %zu\n", free_blocks);
 
-    // Free the first allocated block
+    // Free the allocated block
     FSAFree(allocator, block1);
     printf("Freed block at address: %p\n", block1);
-
-    // Count free blocks again
-    free_blocks = FSACountFree(allocator);
-    printf("Free blocks available after freeing: %zu\n", free_blocks);
 
     // Clean up
     free(memory_pool);
